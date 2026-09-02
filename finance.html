@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>امور مالی</h1><p>درآمد، هزینه، تراکنش‌ها و جریان نقدی</p><a class="btn ghost" href="{{url_for('export_csv',entity='finance')}}">خروجی CSV</a></div></div>
+
+<div class="stat-grid"><div class="stat"><small>درآمد ثبت‌شده</small><b>{{"{:,.0f}".format(income)}} <i>تومان</i></b></div><div class="stat"><small>هزینه ثبت‌شده</small><b>{{"{:,.0f}".format(expense)}} <i>تومان</i></b></div><div class="stat"><small>خالص</small><b>{{"{:,.0f}".format(income-expense)}} <i>تومان</i></b></div></div>
+<div class="two-col"><section class="panel"><div class="panel-head"><h3>ثبت تراکنش</h3></div><form method="post" class="form-grid"><div class="two"><label>نوع<select name="kind"><option value="income">درآمد</option><option value="expense">هزینه</option></select></label><label>دسته‌بندی<input name="category" value="سایر"></label></div><label>عنوان<input name="title" required></label><label>مبلغ<input type="number" name="amount" required></label><label>یادداشت<textarea name="note"></textarea></label><button class="btn primary">ثبت تراکنش</button></form></section>
+<section class="panel"><div class="panel-head"><h3>دفتر تراکنش‌ها</h3></div><div class="table-wrap"><table><thead><tr><th>عنوان</th><th>نوع</th><th>دسته</th><th>مبلغ</th></tr></thead><tbody>{% for r in rows %}<tr><td>{{r.title}}</td><td>{{'درآمد' if r.kind=='income' else 'هزینه'}}</td><td>{{r.category}}</td><td>{{"{:,.0f}".format(r.amount)}} تومان</td></tr>{% else %}<tr><td colspan="4" class="empty">تراکنشی نیست.</td></tr>{% endfor %}</tbody></table></div></section></div>
+
+{% endblock %}

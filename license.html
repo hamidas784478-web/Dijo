@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>ارتقا به Pro</h1><p>فعال‌سازی قابلیت‌های پیشرفته دیجو با کد لایسنس</p></div></div>
+
+<section class="panel narrow-panel">
+  {% if is_pro %}
+    <div class="flash success">نسخه فعلی: <b>Pro ({{plan}})</b> — از {{activated_at[:10]}} فعال است. بدون محدودیت.</div>
+  {% else %}
+    <div class="flash">نسخه فعلی: <b>رایگان</b>. محدودیت‌های نسخه رایگان:</div>
+    <ul class="muted" style="line-height:2;margin:10px 0 20px">
+      <li>حداکثر ۲۰ محصول، ۳۰ مشتری، ۱۰ تأمین‌کننده</li>
+      <li>حداکثر ۱۵ فاکتور فروش در هر ماه</li>
+      <li>فقط یک حساب کاربری (مدیر) — امکان افزودن فروشنده/کارمند دیگر نیست</li>
+      <li>بدون چت هوش مصنوعی، بدون خروجی Excel/CSV، بدون پشتیبان‌گیری</li>
+    </ul>
+    <div class="flash success" style="margin-bottom:16px">نسخه Pro همهٔ این محدودیت‌ها را برمی‌دارد.</div>
+  {% endif %}
+
+  <form method="post" class="form-grid" style="margin-top:10px">
+    <label>کد لایسنس<input name="code" placeholder="DIJO-PRO-XXXXXXXX-XXXXXXXXXXXX" required></label>
+    <button class="btn primary full">فعال‌سازی</button>
+  </form>
+  <p class="muted" style="margin-top:14px;font-size:11px">کد لایسنس را از فروشنده/تأمین‌کنندهٔ برنامه دریافت کنید. فعال‌سازی کاملاً آفلاین انجام می‌شود و نیاز به اینترنت ندارد.</p>
+</section>
+{% endblock %}

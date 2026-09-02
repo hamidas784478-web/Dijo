@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>سلام، {{session.get('user_name','حمید')}}! 👋</h1><p>خوش آمدی؛ اینجا نمای کلی مدیریت دیجو است.</p></div><select><option>فروشگاه دیجو</option></select></div>
+<section class="stat-grid">
+<div class="stat">
+  <div class="stat-top"><small>فروش امروز</small><div class="stat-ico c1"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3h2l2.4 13a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20.5" r="1.1"/><circle cx="17" cy="20.5" r="1.1"/></svg></div></div>
+  <b>{{ "{:,.0f}".format(stats.today) }} <i>تومان</i></b><span class="trend up">↗ امروز</span>
+  <svg class="stat-spark" viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,24 14,20 28,22 42,14 56,17 70,8 84,11 100,4" fill="none" stroke="#a78bfa" stroke-width="2"/></svg>
+</div>
+<div class="stat">
+  <div class="stat-top"><small>فروش ماه</small><div class="stat-ico c2"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1-3 2.3c0 3 6 1.5 6 4.4 0 1.4-1.4 2.3-3 2.3s-3-1-3-2.4"/></svg></div></div>
+  <b>{{ "{:,.0f}".format(stats.month) }} <i>تومان</i></b><span class="trend up">↗ این ماه</span>
+  <svg class="stat-spark" viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,20 14,22 28,15 42,18 56,10 70,13 84,6 100,9" fill="none" stroke="#34d9a6" stroke-width="2"/></svg>
+</div>
+<div class="stat">
+  <div class="stat-top"><small>سفارش‌ها</small><div class="stat-ico c3"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h2l1.4 12.6a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.7L21 8H6.2"/><circle cx="9.5" cy="21" r="1.2"/><circle cx="17" cy="21" r="1.2"/></svg></div></div>
+  <b>{{stats.orders}}</b><span class="muted">فاکتور ثبت‌شده</span>
+  <svg class="stat-spark" viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,18 14,14 28,19 42,12 56,16 70,9 84,14 100,7" fill="none" stroke="#48c7ff" stroke-width="2"/></svg>
+</div>
+<div class="stat">
+  <div class="stat-top"><small>مشتریان</small><div class="stat-ico c4"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg></div></div>
+  <b>{{stats.customers}}</b><span class="muted">مشتری ثبت‌شده</span>
+  <svg class="stat-spark" viewBox="0 0 100 30" preserveAspectRatio="none"><polyline points="0,22 14,19 28,20 42,13 56,15 70,10 84,12 100,5" fill="none" stroke="#ffb84d" stroke-width="2"/></svg>
+</div>
+</section>
+<div class="dashboard-grid">
+<section class="panel chart-panel"><div class="panel-head"><h3>نمودار فروش</h3><span class="pill">۱۲ دوره اخیر</span></div>
+<div class="fake-chart">{% for x in chart %}<div class="bar-wrap"><div class="bar" style="height:{{ [10, (x.total/1000000)|round|int * 5, 70]|max }}%"></div><small>{{x.d[-5:]}}</small></div>{% endfor %}</div>
+</section>
+<section class="panel chat-preview"><div class="panel-head"><h3>چت دیجو</h3><a href="{{url_for('chat')}}">مشاهده</a></div><div class="bubble ai">سلام حمید 👋<br>من دیجو هستم، چه کمکی از دستم برمیاد؟</div><div class="bubble user">گزارش فروش این ماه رو بده.</div><div class="bubble ai">فروش این ماه: <b>{{"{:,.0f}".format(stats.month)}} تومان</b></div><a class="btn ghost full" href="{{url_for('chat')}}">باز کردن چت دیجو</a></section>
+</div>
+<div class="three-grid">
+<section class="panel"><div class="panel-head"><h3>محصولات کم‌موجودی</h3><a href="{{url_for('products')}}">همه</a></div>{% for p in low_products %}<div class="list-row"><div><b>{{p.name}}</b><small>{{p.code}}</small></div><span class="danger">{{"%.0f"|format(p.stock)}} عدد</span></div>{% else %}<div class="empty">موردی نیست.</div>{% endfor %}</section>
+<section class="panel"><div class="panel-head"><h3>محصولات پرفروش</h3></div>{% for p in top_products %}<div class="list-row"><div><b>{{p.name}}</b></div><span>{{"%.0f"|format(p.qty)}} عدد</span></div>{% else %}<div class="empty">هنوز فروشی ثبت نشده.</div>{% endfor %}</section>
+<section class="panel"><div class="panel-head"><h3>آخرین فعالیت‌ها</h3><a href="{{url_for('activity')}}">همه</a></div>{% for a in activities %}<div class="list-row"><div><b>{{a.user_name}}</b><small>{{a.action}}</small></div><small>{{a.created_at[:16].replace('T',' ')}}</small></div>{% else %}<div class="empty">هنوز فعالیتی ثبت نشده.</div>{% endfor %}</section>
+</div>
+<section class="panel"><div class="panel-head"><h3>آخرین فروش‌ها</h3><a class="btn small primary" href="{{url_for('sales')}}">ثبت فروش جدید</a></div>
+<div class="table-wrap"><table><thead><tr><th>فاکتور</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead><tbody>{% for s in recent_sales %}<tr><td>#{{s.id}}</td><td>{{s.customer or 'مشتری متفرقه'}}</td><td>{{"{:,.0f}".format(s.total)}} تومان</td><td><span class="status {{'ok' if s.status=='تسویه' else 'warn'}}">{{s.status}}</span></td><td>{{s.created_at[:16].replace('T',' ')}}</td></tr>{% else %}<tr><td colspan="5" class="empty">هنوز فاکتوری ثبت نشده.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

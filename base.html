@@ -1,0 +1,78 @@
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title or "دیجو" }} | Dijo</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0b1426">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دیجو">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icon-192.png') }}">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><img src="{{ url_for('static', filename='images/logo.jpg') }}"><div><b>دیجو</b><small>مدیریت هوشمند کسب‌وکار</small></div></div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint=='dashboard' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9.5 20v-6h5v6"/></svg><span>داشبورد</span></a>
+      <a href="{{ url_for('chat') }}" class="{{ 'active' if request.endpoint=='chat' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>چت دیجو</span></a>
+      <a href="{{ url_for('customers') }}" class="{{ 'active' if request.endpoint=='customers' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M17 3.5a4 4 0 0 1 0 7.5"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg><span>مشتریان</span></a>
+      <a href="{{ url_for('products') }}" class="{{ 'active' if request.endpoint=='products' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg><span>محصولات و انبار</span></a>
+      <a href="{{ url_for('suppliers') }}" class="{{ 'active' if request.endpoint=='suppliers' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M1 14h14V6H1z"/><path d="M15 10h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/></svg><span>تأمین‌کنندگان</span></a>
+      <a href="{{ url_for('purchases') }}" class="{{ 'active' if request.endpoint=='purchases' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h2l1.4 12.6a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.7L21 8H6.2"/><circle cx="9.5" cy="21" r="1.2"/><circle cx="17" cy="21" r="1.2"/></svg><span>خرید</span></a>
+      <a href="{{ url_for('sales') }}" class="{{ 'active' if request.endpoint=='sales' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3h2l2.4 13a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20.5" r="1.1"/><circle cx="17" cy="20.5" r="1.1"/></svg><span>فروش</span></a>
+      <a href="{{ url_for('debts') }}" class="{{ 'active' if request.endpoint=='debts' else '' }}"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg><span>بدهی‌ها</span></a>
+      <a href="{{ url_for('finance') }}" class="{{ 'active' if request.endpoint=='finance' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1-3 2.3c0 3 6 1.5 6 4.4 0 1.4-1.4 2.3-3 2.3s-3-1-3-2.4"/></svg><span>امور مالی</span></a>
+      <a href="{{ url_for('tasks') }}" class="{{ 'active' if request.endpoint=='tasks' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="m4 12 4 4L20 4"/><path d="M4 19h9"/></svg><span>وظایف</span></a>
+      <a href="{{ url_for('reports') }}" class="{{ 'active' if request.endpoint=='reports' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M11 20V4"/><path d="M18 20v-7"/></svg><span>گزارش‌ها</span></a>
+      <a href="{{ url_for('notifications') }}" class="{{ 'active' if request.endpoint=='notifications' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg><span>اعلان‌ها</span></a>
+      {% if session.get('role') in ['مدیر','admin'] %}<a href="{{ url_for('users') }}" class="{{ 'active' if request.endpoint=='users' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span>کاربران</span></a>
+      <a href="{{ url_for('business') }}" class="{{ 'active' if request.endpoint=='business' else '' }}"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M8 8V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/></svg><span>مدیریت کسب‌وکار</span></a>
+      <a href="{{ url_for('ai_settings') }}" class="{{ 'active' if request.endpoint=='ai_settings' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.9 19.1l2.8-2.8"/><path d="M16.3 7.7l2.8-2.8"/></svg><span>اتصال هوش مصنوعی</span></a>
+      <a href="{{ url_for('license_page') }}" class="{{ 'active' if request.endpoint=='license_page' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2l2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6-4.4-4.2 6-.8Z"/></svg><span>ارتقا به Pro</span></a>{% endif %}
+      <a href="{{ url_for('activity') }}" class="{{ 'active' if request.endpoint=='activity' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>تاریخچه فعالیت</span></a>
+      {% if session.get('role') in ['مدیر','admin'] %}<a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint=='settings' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>تنظیمات</span></a>{% endif %}
+    </nav>
+    <div class="profile"><div class="avatar">{{ (session.get('user_name') or 'ک')[0] }}</div><div><b>{{ session.get('user_name','کاربر') }}</b><small>{{ session.get('role','کاربر') }}</small></div>{% if session.get("role") in ["مدیر","admin"] %}<a title="پشتیبان" href="{{ url_for('backup') }}"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></a>{% endif %}<a title="خروج" href="{{ url_for('logout') }}"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></a></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" onclick="openSidebar()"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
+      <div class="search" style="position:relative"><svg class="icon" style="width:16px;height:16px;color:#71809d" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="جستجوی سراسری در دیجو..." id="globalSearch" autocomplete="off"><div id="searchResults" style="display:none;position:absolute;top:46px;right:0;left:0;background:#0b1426;border:1px solid var(--line);border-radius:12px;z-index:50;padding:6px"></div></div>
+      <div class="top-actions">
+        <a href="{{ url_for('notifications') }}" style="position:relative"><svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg></a>
+        <span><svg class="icon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg></span>
+        <span>{{ now.strftime('%Y/%m/%d') }}</span>
+      </div>
+    </header>
+    {% with msgs=get_flashed_messages(with_categories=true) %}
+      {% for cat,msg in msgs %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<nav class="bottom-nav">
+  <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint=='dashboard' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>داشبورد</a>
+  <a href="{{ url_for('chat') }}" class="{{ 'active' if request.endpoint=='chat' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.48 8.48 0 0 1 8.5 8.5Z"/></svg>چت</a>
+  <a href="{{ url_for('customers') }}" class="{{ 'active' if request.endpoint=='customers' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>مشتریان</a>
+  <a href="{{ url_for('products') }}" class="{{ 'active' if request.endpoint=='products' else '' }}"><svg class="icon" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>محصولات</a>
+  <a href="{{ url_for('settings') }}" class="{{ 'active' if request.endpoint=='settings' else '' }}"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9"/></svg>تنظیمات</a>
+</nav>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/static/sw.js').catch(function(){});}</script>
+<script>
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarBackdrop').classList.add('show')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarBackdrop').classList.remove('show')}
+document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+document.querySelectorAll('#sidebar nav a').forEach(a=>a.addEventListener('click', closeSidebar));
+window.addEventListener('pageshow', closeSidebar);
+const gs=document.getElementById('globalSearch'), sr=document.getElementById('searchResults');
+if(gs){let t;gs.addEventListener('input',()=>{clearTimeout(t);const q=gs.value.trim();if(q.length<2){sr.style.display='none';return;}t=setTimeout(()=>fetch('{{url_for("global_search")}}?q='+encodeURIComponent(q)).then(r=>r.json()).then(a=>{sr.innerHTML=a.length?a.map(x=>`<a href="${x.url}" style="display:block;padding:9px;border-radius:8px"><small style="color:#7e8ca8">${x.type}</small> &nbsp; ${x.name}</a>`).join(''):'<div class="muted" style="padding:9px">نتیجه‌ای پیدا نشد</div>';sr.style.display='block';}).catch(()=>{}),180)});document.addEventListener('click',e=>{if(!e.target.closest('.search'))sr.style.display='none'});}
+</script>
+</body></html>

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: dijo-pro
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT app:app
+    envVars:
+      - key: DIJO_LICENSE_SECRET
+        sync: false
+      - key: DIJO_AI_ENDPOINT
+        sync: false
+      - key: DIJO_AI_API_KEY
+        sync: false

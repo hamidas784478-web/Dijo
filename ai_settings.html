@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>اتصال هوش مصنوعی</h1><p>اتصال مستقیم دیجو به Groq و APIهای سازگار با OpenAI</p></div></div>
+<section class="panel narrow-panel">
+<form method="post" class="form-grid" id="aiSettingsForm">
+<label>ارائه‌دهنده<input name="ai_provider" value="{{provider}}"></label>
+<label>API Key<input name="ai_api_key" type="password" placeholder="{% if has_key %}کلید ذخیره شده است — برای تغییر وارد کن{% else %}کلید API را وارد کن{% endif %}"></label>
+<label>Model<input name="ai_model" value="{{model}}" placeholder="llama-3.3-70b-versatile"></label>
+<label>Endpoint<input name="ai_endpoint" value="{{endpoint}}"></label>
+<div class="info-box">برای Groq، Endpoint رسمی Chat Completions همین است و کلید باید به‌صورت Bearer ارسال شود.</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn primary">ذخیره اتصال</button><button type="button" class="btn" id="testAi">تست اتصال</button></div>
+<div id="testResult" class="info-box" style="display:none"></div>
+</form></section>
+<script>
+document.getElementById('testAi').addEventListener('click', async()=>{const b=document.getElementById('testAi'),r=document.getElementById('testResult');b.disabled=true;b.textContent='در حال تست...';r.style.display='block';try{const x=await fetch('/api/ai/test',{method:'POST',headers:{'Accept':'application/json'}});const raw=await x.text();let j={};try{j=JSON.parse(raw)}catch(e){j={error:raw||('HTTP '+x.status)}}r.textContent=j.ok?'✅ اتصال برقرار است: '+j.answer:'❌ اتصال ناموفق: '+(j.error||j.answer||'خطای نامشخص')}catch(e){r.textContent='❌ خطا در ارتباط با سرور دیجو'}finally{b.disabled=false;b.textContent='تست اتصال'}});
+</script>
+{% endblock %}

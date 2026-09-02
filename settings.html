@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>تنظیمات</h1><p>پروفایل، ظاهر، اعلان‌ها و امنیت</p></div></div>
+
+<section class="panel narrow-panel" style="margin-bottom:14px"><div class="panel-head"><h3>اتصال هوش مصنوعی</h3><a href="{{url_for('ai_settings')}}">مدیریت اتصال</a></div><p class="muted">تنظیم کلید API، مدل و آدرس سرویس برای فعال‌سازی چت دیجو.</p><a class="btn primary" href="{{url_for('ai_settings')}}">رفتن به تنظیمات هوش مصنوعی</a></section>
+
+<section class="panel"><form method="post" class="form-grid"><div class="two"><label>نام نمایشی<input value="{{session.get('user_name')}}"></label><label>زبان<input value="فارسی"></label></div><div class="two"><label>ظاهر<select><option>Dark</option><option>روشن</option></select></label><label>اعلان‌ها<select><option>فعال</option><option>غیرفعال</option></select></label></div><h3>امنیت</h3><label>رمز عبور جدید<input type="password" placeholder="در صورت نیاز"></label><button class="btn primary">ذخیره تنظیمات</button></form></section><section class="panel narrow-panel" style="margin-top:14px"><div class="panel-head"><h3>پشتیبان و بازیابی</h3></div><p class="muted">قبل از بازیابی، نسخه فعلی دیتابیس به‌صورت خودکار ذخیره می‌شود.</p><form method="post" action="{{url_for('restore')}}" enctype="multipart/form-data" class="form-grid"><label>فایل پشتیبان DB<input type="file" name="backup_file" accept=".db" required></label><button class="btn ghost" onclick="return confirm('دیتابیس فعلی با فایل انتخابی جایگزین می‌شود. ادامه؟')">بازیابی دیتابیس</button></form><div style="margin-top:10px"><a class="btn primary" href="{{url_for('backup')}}">دریافت پشتیبان فعلی</a></div></section>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>چت دیجو</h1><p>دستیار هوشمند مدیریت کسب‌وکار</p></div></div>
+<div class="chat-page panel">
+  <div class="chat-top"><div class="bot-avatar">D</div><div><b>دستیار هوشمند دیجو</b><small>متصل به داده‌های کسب‌وکار</small></div><span class="online">● آنلاین</span></div>
+  <div class="chat-body" id="chatBody">
+    <div class="msg-row bot">
+      <div class="msg-avatar bot">D</div>
+      <div class="msg-col">
+        <div class="bubble ai">سلام {{session.get('user_name','').split(' ')[0] or ''}} 👋<br>می‌تونی درباره فروش، سود، مشتری‌ها یا موجودی از من سؤال کنی.</div>
+        <div class="msg-time">هم‌اکنون</div>
+      </div>
+    </div>
+    <div class="quick" id="quickRow">
+      <button data-msg="فروش این ماه چقدر بوده؟">گزارش فروش این ماه</button>
+      <button data-msg="مشتری‌ها چند نفر هستند؟">تعداد مشتریان</button>
+      <button data-msg="موجودی کم را بررسی کن">بررسی موجودی</button>
+      <button data-msg="سود چقدر بوده؟">گزارش سود</button>
+    </div>
+  </div>
+  <form class="chat-input" id="chatForm" autocomplete="off">
+    <button type="button" class="mic-btn" title="ورودی صوتی (به‌زودی)"><svg class="icon" viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/></svg></button>
+    <input name="message" id="chatInput" placeholder="پیام خود را بنویسید..." required>
+    <button class="btn primary" id="chatSend" type="submit"><svg class="icon" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="m3 3 18 9-18 9 4-9-4-9Z"/></svg></button>
+  </form>
+</div>
+<script>
+const body=document.getElementById('chatBody'), form=document.getElementById('chatForm'), input=document.getElementById('chatInput'), quickRow=document.getElementById('quickRow');
+const fmtTime=()=> new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+function scrollDown(){ body.scrollTop = body.scrollHeight; }
+function addUserMsg(text){
+  const row=document.createElement('div'); row.className='msg-row user';
+  row.innerHTML=`<div class="msg-avatar user">{{ (session.get('user_name') or 'ک')[0] }}</div><div class="msg-col"><div class="bubble user"></div><div class="msg-time">${fmtTime()}</div></div>`;
+  row.querySelector('.bubble').textContent=text;
+  body.appendChild(row); scrollDown();
+}
+function addTyping(){
+  const row=document.createElement('div'); row.className='msg-row bot'; row.id='typingRow';
+  row.innerHTML=`<div class="msg-avatar bot">D</div><div class="typing-row"><span></span><span></span><span></span></div>`;
+  body.appendChild(row); scrollDown();
+}
+function removeTyping(){ const t=document.getElementById('typingRow'); if(t) t.remove(); }
+function relevantActions(q){
+  q = (q||'').toLowerCase(); const acts=[];
+  if(q.includes('فروش')||q.includes('سود')||q.includes('گزارش')) acts.push({icon:'📊',label:'مشاهده گزارش کامل', href:"{{ url_for('reports') }}"});
+  if(q.includes('نمودار')||q.includes('فروش')||q.includes('سود')) acts.push({icon:'📈',label:'مشاهده نمودار', href:"{{ url_for('dashboard') }}"});
+  if(q.includes('اکسل')||q.includes('excel')||q.includes('خروجی')) acts.push({icon:'⬇',label:'خروجی Excel', href:"{{ url_for('export_csv', entity='sales') }}"});
+  if(q.includes('موجودی')||q.includes('انبار')||q.includes('کمبود')) acts.push({icon:'📦',label:'مشاهده انبار', href:"{{ url_for('products') }}"});
+  if(q.includes('مشتری')) acts.push({icon:'👥',label:'مشاهده مشتریان', href:"{{ url_for('customers') }}"});
+  const seen=new Set(); return acts.filter(a=>!seen.has(a.label)&&seen.add(a.label));
+}
+function addBotMsg(text, forQuery){
+  const row=document.createElement('div'); row.className='msg-row bot';
+  const acts=relevantActions(forQuery);
+  const actionsHtml = acts.length ? `<div class="msg-actions">${acts.map(a=>`<button type="button" onclick="location.href='${a.href}'">${a.icon} ${a.label}</button>`).join('')}</div>` : '';
+  row.innerHTML=`<div class="msg-avatar bot">D</div><div class="msg-col"><div class="bubble ai"></div><div class="msg-time">${fmtTime()}</div>${actionsHtml}</div>`;
+  row.querySelector('.bubble').textContent=text;
+  body.appendChild(row); scrollDown();
+}
+async function send(message){
+  if(!message.trim()) return;
+  if(quickRow) quickRow.remove();
+  addUserMsg(message); input.value=''; addTyping();
+  try{
+    const r=await fetch("{{ url_for('api_ai') }}",{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});
+    const data=await r.json();
+    removeTyping();
+    addBotMsg(data.ok ? data.answer : ('❌ ' + (data.error||'خطا در دریافت پاسخ')), message);
+  }catch(e){ removeTyping(); addBotMsg('❌ اتصال به سرور برقرار نشد.', message); }
+}
+form.addEventListener('submit', e=>{ e.preventDefault(); send(input.value); });
+document.addEventListener('click', e=>{ const b=e.target.closest('[data-msg]'); if(b) send(b.getAttribute('data-msg')); });
+</script>
+{% endblock %}

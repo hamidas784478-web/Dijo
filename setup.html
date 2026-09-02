@@ -1,0 +1,18 @@
+
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>راه‌اندازی اولیه | دیجو</title><link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"></head>
+<body class="auth-bg"><div class="auth-card">
+<img class="auth-logo" src="{{ url_for('static',filename='images/logo.jpg') }}">
+<h1>راه‌اندازی دیجو</h1><p>این یک نصب جدید است — اطلاعات مدیر سیستم را وارد کنید تا شروع کنیم</p>
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for c,m in msgs %}<div class="flash {{c}}">{{m}}</div>{% endfor %}{% endwith %}
+<form method="post">
+<div class="two">
+<label>نام<input name="first_name" required placeholder="نام"></label>
+<label>نام خانوادگی<input name="last_name" placeholder="نام خانوادگی"></label>
+</div>
+<label>نام کاربری<input name="username" required autocomplete="username" placeholder="مثلاً admin"></label>
+<label>رمز عبور<input type="password" name="password" required minlength="4" autocomplete="new-password" placeholder="حداقل ۴ رقم"></label>
+<label>تکرار رمز عبور<input type="password" name="confirm" required minlength="4" autocomplete="new-password" placeholder="تکرار رمز"></label>
+<button class="btn primary full">ساخت حساب مدیر و شروع</button>
+</form>
+<div class="auth-foot">این صفحه فقط یک‌بار، برای اولین اجرای برنامه نمایش داده می‌شود.</div>
+</div></body></html>

@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>وظایف و یادآوری‌ها</h1><p>پیگیری کارهای روزانه و موعدها</p></div></div>
+
+<div class="two-col"><section class="panel"><div class="panel-head"><h3>وظیفه جدید</h3></div><form method="post" class="form-grid"><label>عنوان<input name="title" required></label><label>توضیحات<textarea name="description"></textarea></label><div class="two"><label>اولویت<select name="priority"><option>کم</option><option selected>متوسط</option><option>زیاد</option><option>فوری</option></select></label><label>دسته‌بندی<input name="category" value="عمومی"></label></div><label>تاریخ انجام<input type="date" name="due_date"></label><button class="btn primary">ایجاد وظیفه</button></form></section>
+<section class="panel"><div class="panel-head"><h3>لیست وظایف</h3></div>{% for t in rows %}<div class="task"><div><b>{{t.title}}</b><small>{{t.description or ''}}</small><span class="tag">{{t.priority}} · {{t.due_date or 'بدون موعد'}}</span></div>{% if t.status=='باز' %}<form method="post" action="{{url_for('task_done',id=t.id)}}" style="display:inline"><button type="submit" class="btn small primary">تکمیل</button></form>{% else %}<span class="status ok">تکمیل‌شده</span>{% endif %}</div>{% else %}<div class="empty">وظیفه‌ای نیست.</div>{% endfor %}</section></div>
+
+{% endblock %}

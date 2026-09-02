@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>خرید و فاکتور تأمین‌کننده</h1><p>ثبت خرید و مدیریت بدهی تأمین‌کنندگان</p></div></div>
+
+<div class="two-col"><section class="panel"><div class="panel-head"><h3>ثبت خرید</h3></div><form method="post" class="form-grid"><label>تأمین‌کننده<select name="supplier_id"><option value="">انتخاب کنید</option>{% for s in suppliers %}<option value="{{s.id}}">{{s.name}}</option>{% endfor %}</select></label><label>مبلغ کل<input type="number" name="total" required></label><label>پرداختی<input type="number" name="paid" value="0"></label><button class="btn primary">ثبت خرید</button></form></section>
+<section class="panel"><div class="panel-head"><h3>تاریخچه خرید</h3></div><div class="table-wrap"><table><thead><tr><th>فاکتور</th><th>تأمین‌کننده</th><th>کل</th><th>پرداخت</th><th>وضعیت</th></tr></thead><tbody>{% for p in rows %}<tr><td>#{{p.id}}</td><td>{{p.supplier or '—'}}</td><td>{{"{:,.0f}".format(p.total)}} تومان</td><td>{{"{:,.0f}".format(p.paid)}}</td><td>{{p.status}}</td></tr>{% else %}<tr><td colspan="5" class="empty">خریدی ثبت نشده.</td></tr>{% endfor %}</tbody></table></div></section></div>
+
+{% endblock %}

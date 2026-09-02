@@ -1,0 +1,16 @@
+
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ورود | دیجو</title><link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"></head>
+<body class="auth-bg"><div class="auth-card">
+<img class="auth-logo" src="{{ url_for('static',filename='images/logo.jpg') }}">
+<h1>به دیجو خوش آمدید</h1><p>مدیریت هوشمند کسب‌وکار شما</p>
+<div class="auth-tabs"><a class="active" href="{{ url_for('login') }}">ورود</a><a href="{{ url_for('register') }}">ثبت‌نام</a></div>
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for c,m in msgs %}<div class="flash {{c}}">{{m}}</div>{% endfor %}{% endwith %}
+<form method="post">
+<label>نام کاربری<input name="username" required autocomplete="username" placeholder="نام کاربری"></label>
+<label>رمز عبور<input type="password" name="password" required autocomplete="current-password" placeholder="••••••••"></label>
+<div class="row-between"><label class="check"><input type="checkbox" name="remember"> مرا به خاطر بسپار</label><a href="{{url_for('forgot_password')}}">فراموشی رمز؟</a></div>
+<button class="btn primary full">ورود به حساب</button>
+<button type="button" class="btn google full">G &nbsp; ورود با گوگل</button>
+</form>
+<div class="auth-foot">حساب ندارید؟ <a href="{{url_for('register')}}">ثبت‌نام کنید</a></div>
+</div></body></html>

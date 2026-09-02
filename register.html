@@ -1,0 +1,12 @@
+
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ثبت‌نام | دیجو</title><link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"></head>
+<body class="auth-bg"><div class="auth-card">
+<img class="auth-logo small" src="{{ url_for('static',filename='images/logo.jpg') }}"><h1>ساخت حساب دیجو</h1><p>اطلاعات حساب مدیر را وارد کنید.</p>
+<div class="auth-tabs"><a href="{{ url_for('login') }}">ورود</a><a class="active" href="{{ url_for('register') }}">ثبت‌نام</a></div>
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for c,m in msgs %}<div class="flash {{c}}">{{m}}</div>{% endfor %}{% endwith %}
+<form method="post">
+<div class="two"><label>نام<input name="first_name" required></label><label>نام خانوادگی<input name="last_name" required></label></div>
+<label>نام کاربری<input name="username" required></label><label>رمز عبور<input type="password" name="password" required></label><label>تکرار رمز عبور<input type="password" name="confirm" required></label>
+<button class="btn primary full">ساخت حساب</button></form>
+<div class="auth-foot">قبلاً حساب ساخته‌اید؟ <a href="{{url_for('login')}}">ورود</a></div>
+</div></body></html>

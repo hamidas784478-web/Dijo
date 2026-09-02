@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>مشتریان</h1><p>مدیریت پروفایل، بدهی و سوابق مشتریان</p><a class="btn ghost" href="{{url_for('export_csv',entity='customers')}}">خروجی CSV</a></div></div>
+
+<div class="two-col"><section class="panel"><div class="panel-head"><h3>افزودن مشتری</h3></div>
+<form method="post" class="form-grid"><label>نام و نام خانوادگی<input name="name" required></label><label>شماره تماس<input name="phone"></label><label>آدرس<input name="address"></label><label>یادداشت<textarea name="notes"></textarea></label><button class="btn primary">افزودن مشتری</button></form></section>
+<section class="panel"><div class="panel-head"><h3>لیست مشتریان</h3><form class="inline-search"><input name="q" value="{{q}}" placeholder="جستجو..."><button>جستجو</button></form></div>
+<div class="table-wrap"><table><thead><tr><th>نام</th><th>تماس</th><th>آدرس</th><th>عملیات</th></tr></thead><tbody>{% for r in rows %}<tr><td><b>{{r.name}}</b></td><td>{{r.phone or '—'}}</td><td>{{r.address or '—'}}</td><td><a class="btn small" href="{{url_for('payments',entity_type='customer',id=r.id)}}">حساب</a> <form method="post" action="{{url_for('delete_customer',id=r.id)}}" style="display:inline" onsubmit="return confirm('حذف شود؟')"><button type="submit" class="btn small danger-link" style="border:0;cursor:pointer">حذف</button></form></td></tr>{% else %}<tr><td colspan="4" class="empty">موردی پیدا نشد.</td></tr>{% endfor %}</tbody></table></div></section></div>
+
+{% endblock %}

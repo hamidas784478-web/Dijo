@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>مرکز اعلان‌ها</h1><p>هشدارهای مهم سیستم</p><form method="post" action="{{url_for('notifications_read_all')}}"><button class="btn ghost">خواندن همه</button></form></div></div>
+
+<section class="panel">{% for n in rows %}<div class="notification {{n.level}}"><div class="notif-icon">!</div><div><b>{{n.title}}</b><p>{{n.body}}</p><small>{{n.created_at[:16].replace('T',' ')}}</small></div></div>{% else %}<div class="empty">اعلانی وجود ندارد.</div>{% endfor %}</section>
+
+{% endblock %}
